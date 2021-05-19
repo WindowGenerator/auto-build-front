@@ -1,0 +1,9 @@
+footer-custom {
+  /* Rectangle 10 */
+  height: 113px;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+
+  background: #52506A;
+}
