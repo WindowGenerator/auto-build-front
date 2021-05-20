@@ -1,27 +1,29 @@
 <nav class="navbar navbar-light">
-  <div class="container">
-    <a class="navbar-brand" routerLink="/">AUTO-BUILD</a>
+  <div class="container" style="margin-bottom: 100px;">
+    <a class="navbar-brand" routerLink="/">
+      <img src="./assets/main-logo.png">
+    </a>
 
     <!-- Show this for logged out users -->
     <ul *appShowAuthed="false"
       class="nav navbar-nav pull-xs-right">
 
       <li class="nav-item">
-        <a class="nav-link"
+        <a class="nav-link text-normal-custom header-text"
            routerLink="/advices">
           Советы по сборке ПК
         </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link"
+        <a class="nav-link text-normal-custom header-text"
           routerLink="/favorites">
           Избранное
         </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link"
+        <a class="nav-link btn-default"
           routerLink="/register"
           routerLinkActive="active">
           Регистрация
@@ -29,7 +31,7 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link"
+        <a class="nav-link btn-primary"
            routerLink="/login"
            routerLinkActive="active">
           Вход
@@ -43,7 +45,7 @@
       class="nav navbar-nav pull-xs-right">
 
       <li class="nav-item">
-        <a class="nav-link"
+        <a class="nav-link text-normal-custom header-text"
           routerLink="/advices"
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }">
@@ -52,25 +54,16 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link"
+        <a class="nav-link text-normal-custom header-text"
            routerLink="/favorites">
           Избранное
         </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link"
-          routerLink="/settings"
-          routerLinkActive="active">
-          <i class="ion-gear-a"></i>Настройки
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link"
+        <a class="nav-link btn-default"
           [routerLink]="['/profile', currentUser.username]"
           routerLinkActive="active">
-          <img [src]="currentUser.image" *ngIf="currentUser.image" class="user-pic" />
           {{ currentUser.username }}
         </a>
       </li>

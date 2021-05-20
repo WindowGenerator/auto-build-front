@@ -1,9 +1,15 @@
-footer-custom {
+.footer-custom {
   /* Rectangle 10 */
-  height: 113px;
+  height: 100px;
   position: fixed;
   left: 0;
   bottom: 0;
 
   background: #52506A;
+}
+.container {
+  margin-top: 25px;
+}
+.text-color-special {
+  color: var(--main-white) !important;
 }

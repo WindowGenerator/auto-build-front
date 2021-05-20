@@ -1,1 +1,145 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+  --main-purple-background: #8C30F5;
+  --main-purple-border: #9938DA;
+
+  --main-white: #FFFFFF;
+  --main-text-color: var(--main-purple-background);
+
+  --main-primary-normal: var(--main-purple-background);
+  --main-primary-hover: var(--main-purple-background);
+  --main-primary-active: var(--main-purple-background);
+
+  --main-default-normal: var(--main-purple-border);
+  --main-default-hover: var(--main-purple-border);
+  --main-default-active: var(--main-purple-border);
+
+  --main-background-cell: #D2D9F1;
+  --main-background-cell-border: #52506A;
+
+}
+
+.btn-primary {
+  font-family: Manrope;
+  font-style: normal;
+
+  color: var(--main-white) !important;
+  border-radius: 8px;
+  background-color: var(--main-primary-normal);
+  border-color: var(--main-primary-normal);
+
+  padding-left: 25px;
+  padding-right: 25px;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--main-primary-hover);
+  border-color: var(--main-primary-hover);
+}
+.btn-primary:active,
+.btn-primary.active,
+.btn-primary:active:focus,
+.btn-primary:active.focus,
+.btn-primary.active:focus,
+.btn-primary.active.focus,
+.btn-primary:active:hover,
+.btn-primary.active:hover,
+.open .dropdown-toggle.btn-primary {
+  background-color: var(--main-primary-active);
+  border-color: var(--main-primary-active);
+  background-image: none;
+}
+.btn-primary:disabled,
+.btn-primary.disabled,
+.btn-primary:disabled:focus,
+.btn-primary:disabled.focus,
+.btn-primary.disabled:focus,
+.btn-primary.disabled.focus,
+.btn-primary:disabled:hover,
+.btn-primary.disabled:hover {
+  background-color: var(--main-primary-active);
+  border-color: var(--main-primary-active);
+  background-image: none;
+}
+
+
+.btn-default {
+  font-family: Manrope;
+  font-style: normal;
+
+  color: var(--main-text-color) !important;
+  background-color: var(--main-white);
+  border: 1px solid var(--main-default-normal);
+  box-sizing: border-box;
+  border-radius: 8px;
+
+  padding-left: 25px;
+  padding-right: 25px;
+}
+.btn-default:hover,
+.btn-default:focus {
+  background-color: var(--main-white);
+  border-color: var(--main-default-hover);
+}
+.btn-default:active,
+.btn-default.active,
+.btn-default:active:focus,
+.btn-default:active.focus,
+.btn-default.active:focus,
+.btn-default.active.focus,
+.btn-default:active:hover,
+.btn-default.active:hover,
+.open .dropdown-toggle.btn-primary {
+  background-color: var(--main-white);
+  border-color: var(--main-default-active);
+  background-image: none;
+}
+.btn-default:disabled,
+.btn-default.disabled,
+.btn-default:disabled:focus,
+.btn-default:disabled.focus,
+.btn-default.disabled:focus,
+.btn-default.disabled.focus,
+.btn-default:disabled:hover,
+.btn-default.disabled:hover {
+  color: var(--main-text-color) !important;
+  background-color: var(--main-white);
+  border-color: var(--main-default-hover);
+  background-image: none;
+}
+
+/* TODO: переписать это убожество */
+
+.text-xs-center,
+.text-justify,
+.nav-item {
+  font-family: Manrope;
+  font-style: normal;
+
+  color: #1A202C;
+}
+
+.text-bold-custom {
+  font-weight: bold;
+  font-size: 29px;
+  line-height: 39px;
+}
+
+.text-normal-custom {
+  font-size: 16px;
+  line-height: 19px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.container-custom {
+  margin-top: 50px;
+}
+
+a,
+a:focus,
+a:hover {
+  color: #2F80ED;
+}

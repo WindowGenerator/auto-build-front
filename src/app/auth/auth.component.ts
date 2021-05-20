@@ -1,15 +1,33 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import { Errors, UserService } from '../core';
+import {Errors, UserService} from '../core';
+
+
+function passwordControlValidator(control: AbstractControl): ValidationErrors | null {
+  const password_check = control.get('password_check') || null;
+  if (password_check === null) {
+    return null;
+  }
+  const password = control.get('password');
+
+  if (password.value !== password_check.value) {
+    return {passwordMismatch: true};
+  }
+  return null;
+}
+
 
 @Component({
   selector: 'app-auth-page',
-  templateUrl: './auth.component.html'
+  templateUrl: './auth.component.html',
+  styleUrls: ['./auth.component.css']
 })
 export class AuthComponent implements OnInit {
-  authType: String = '';
+
+  private authType: String = '';
+
   title: String = '';
   errors: Errors = {errors: {}};
   isSubmitting = false;
@@ -35,21 +53,23 @@ export class AuthComponent implements OnInit {
       this.authType = data[data.length - 1].path;
       // Set a title for the page accordingly
 
-      const isLoginPage = this.authType === 'login';
-      this.title = isLoginPage ? 'Войти в аккаунт' : 'Создать аккаунт';
-      this.submitButtonName = isLoginPage ? 'Войти' : 'Зарегистрироваться';
+      this.title = this.isLoginPage ? 'Войти в аккаунт' : 'Создать аккаунт';
+      this.submitButtonName = this.isLoginPage ? 'Войти' : 'Зарегистрироваться';
 
       // add form control for username if this is the register page
-      if (this.authType === 'register') {
-        this.authForm.addControl('username', new FormControl());
+      if (this.isRegisterPage) {
+        this.authForm.addControl('password_check', new FormControl('', [Validators.required]));
+        this.authForm.addControl('username', new FormControl('', [Validators.required]));
       }
+      this.authForm.setValidators(passwordControlValidator);
     });
   }
-
 
   submitForm() {
     this.isSubmitting = true;
     this.errors = {errors: {}};
+
+    console.log(this.authForm?.errors);
 
     const credentials = this.authForm.value;
     this.userService
@@ -61,5 +81,13 @@ export class AuthComponent implements OnInit {
         this.isSubmitting = false;
       }
     );
+  }
+
+  get isLoginPage(): boolean {
+    return this.authType === 'login';
+  }
+
+  get isRegisterPage(): boolean {
+    return this.authType === 'register';
   }
 }

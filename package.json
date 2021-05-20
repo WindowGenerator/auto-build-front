@@ -1,6 +1,6 @@
 {
   "name": "ang2-conduit",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -8,7 +8,8 @@
     "build": "ng build --prod  --base-href ./",
     "test": "ng test",
     "lint": "ng lint --force",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "postinstall": "ngcc"
   },
   "pre-commit": [
     "lint"
