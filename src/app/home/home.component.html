@@ -1,8 +1,17 @@
 <div class="advices-page">
-  <div class="container page">
+  <div class="container">
     <div class="row">
       <div class="col-md-6 offset-md-3 col-xs-12">
         <h1 class="text-xs-center">{{ title }}</h1>
+      </div>
+      <div class="chooser-rectangle" *ngFor="let component of componentsList">
+        <div class="component-block">
+          <span>{{component.componentName}}</span>
+          <input
+            class="form-control form-control-md"
+            type="text" />
+          <button>X</button>
+        </div>
       </div>
     </div>
   </div>

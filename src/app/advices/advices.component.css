@@ -3,18 +3,23 @@
   height: 270px;
 
   background: var(--main-background-cell);
-  border: 1px solid var(--main-background-cell-border);
-  box-sizing: border-box;
+  /*border: 1px solid var(--main-background-cell-border);*/
+  /*box-sizing: border-box;*/
 
   display: flex;
   align-items: center;
   margin-bottom: 30px;
+
+  border-radius: 15px;
 }
 
 .image-article-title {
   width: 240px;
   height: 240px;
+
   margin-left: 15px;
+
+  border-radius: 50%;
 }
 
 .text-block {

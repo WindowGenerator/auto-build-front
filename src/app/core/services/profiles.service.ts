@@ -20,7 +20,7 @@ export class ProfilesService {
     return this.apiService.post('/profiles/' + username + '/follow');
   }
 
-  unfollow(username: string): Observable<Profile> {
+  unFollow(username: string): Observable<Profile> {
     return this.apiService.delete('/profiles/' + username + '/follow');
   }
 

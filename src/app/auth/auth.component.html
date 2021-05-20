@@ -8,7 +8,7 @@
         <form [formGroup]="authForm" (ngSubmit)="submitForm()">
           <fieldset [disabled]="isSubmitting">
             <fieldset class="form-group" *ngIf="isRegisterPage">
-              <p class="text-xs-center text-normal-custom">Никнейм</p>
+              <p class="text-xs-center text-normal-custom">Имя пользователя</p>
               <input
                 formControlName="username"
                 placeholder="Username"
@@ -27,7 +27,7 @@
               <p class="text-xs-center text-normal-custom">Пароль</p>
               <input
                 formControlName="password"
-                placeholder="Password"
+                placeholder="********"
                 class="form-control form-control-md"
                 type="password" />
             </fieldset>
@@ -35,7 +35,7 @@
               <p class="text-xs-center text-normal-custom">Повторите пароль</p>
               <input
                 formControlName="password_check"
-                placeholder="Repeat password"
+                placeholder="********"
                 class="form-control form-control-md"
                 type="password" />
             </fieldset>

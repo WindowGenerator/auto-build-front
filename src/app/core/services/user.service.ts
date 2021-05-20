@@ -5,7 +5,7 @@ import { Observable ,  BehaviorSubject ,  ReplaySubject } from 'rxjs';
 import { ApiService } from './api.service';
 import { JwtService } from './jwt.service';
 import { User } from '../models';
-import { map ,  distinctUntilChanged } from 'rxjs/operators';
+import { map, distinctUntilChanged } from 'rxjs/operators';
 
 
 @Injectable()
@@ -29,7 +29,7 @@ export class UserService {
     if (this.jwtService.getToken()) {
       this.apiService.get('/user')
       .subscribe(
-        data => this.setAuth(data.user),
+        data => this.setAuth(data),
         err => this.purgeAuth()
       );
     } else {
@@ -57,11 +57,11 @@ export class UserService {
   }
 
   attemptAuth(type, credentials): Observable<User> {
-    const route = (type === 'login') ? '/login' : '';
+    const route = (type === 'login') ? '/login' : '/register';
     return this.apiService.post('/users' + route, {user: credentials})
       .pipe(map(
       data => {
-        this.setAuth(data.user);
+        this.setAuth(data);
         return data;
       }
     ));
@@ -77,7 +77,7 @@ export class UserService {
     .put('/user', { user })
     .pipe(map(data => {
       // Update the currentUser observable
-      this.currentUserSubject.next(data.user);
+      this.currentUserSubject.next(data);
       return data.user;
     }));
   }
