@@ -18,14 +18,15 @@ const getUser = (request: HttpRequest<any>) => {
 };
 const updateUser = (request: HttpRequest<any>) => {
   const userFields = JSON.parse(request.body).user;
-  console.log(typeof userFields);
+
   return of(new HttpResponse({
     status: 200, body: {...testUser, ...userFields},
   }));
 };
 const registerUser = (request: HttpRequest<any>) => {
+  const userFields = JSON.parse(request.body).user;
   return of(new HttpResponse({
-    status: 200, body: testUser,
+    status: 200, body: {...testUser, ...userFields},
   }));
 };
 const getProfile = (request: HttpRequest<any>) => {

@@ -5,9 +5,11 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './favorites.component.html',
   styleUrls: ['./favorites.component.css']
 })
+
 export class FavoritesComponent implements OnInit {
 
   title: String = '';
+  favoritesComponentsList: Array<any> = [];
 
   constructor() { }
 

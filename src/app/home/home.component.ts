@@ -16,9 +16,11 @@ export class HomeComponent implements OnInit {
   readonly componentsList = componentsList;
 
   title: String = '';
+  pcBuildFor = 'work';
   chooserComponentForm: FormGroup;
 
   constructor(
+    private router: Router,
     private fb: FormBuilder
   ) {
     const formStandardData = {};
@@ -30,5 +32,26 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.title = 'Подобрать комплектующие';
+  }
+
+  submitForm() {
+    this.router.navigateByUrl('/resulting_assembly');
+  }
+
+  clearComponent(controlFieldName: string) {
+    this.chooserComponentForm.get(controlFieldName).setValue(null);
+  }
+
+  returnNewStyleFor(pcBuildFor: string) {
+    if (this.pcBuildFor !== pcBuildFor) {
+      return 'btn btn-md btn-default';
+    } else {
+      return 'btn btn-md btn-primary';
+    }
+  }
+
+  changePcBuildFor(pcBuildFor: string) {
+    this.pcBuildFor = pcBuildFor;
+
   }
 }

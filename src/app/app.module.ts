@@ -13,6 +13,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core';
 import { AdvicesComponent } from './advices/advices.component';
 import { FavoritesComponent } from './favorites/favorites.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ResultingAssemblyComponent } from './resulting-assembly/resulting-assembly.component';
+import { ComponentCardComponent } from './component-card/component-card.component';
 
 @NgModule({
   declarations: [AppComponent, FooterComponent, HeaderComponent],
@@ -22,7 +25,8 @@ import { FavoritesComponent } from './favorites/favorites.component';
     SharedModule,
     HomeModule,
     AuthModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

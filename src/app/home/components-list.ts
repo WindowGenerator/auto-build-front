@@ -9,7 +9,7 @@ export const componentsList: ComponentInfo[] = [
   {formControlName: 'mom', componentName: 'Материнская плата', placeholder: 'Выбрать материнскую плату'},
   {formControlName: 'gpu', componentName: 'Видеокарта', placeholder: 'Выбрать видеокарту'},
   {formControlName: 'ram', componentName: 'Модули памяти', placeholder: 'Выбрать модули памяти'},
-  {formControlName: 'power_core', componentName: 'Блок питания', placeholder: 'Выбрать блок питания'},
+  {formControlName: 'powerCore', componentName: 'Блок питания', placeholder: 'Выбрать блок питания'},
   {formControlName: 'cpu', componentName: 'Система охлаждения', placeholder: 'Выбрать систему охлаждения'},
   {formControlName: 'ssd', componentName: 'SSD диск', placeholder: 'Выбрать SSD диск'},
   {formControlName: 'hdd', componentName: 'HDD диск', placeholder: 'Выбрать HDD диск'},

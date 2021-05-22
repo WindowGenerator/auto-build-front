@@ -13,7 +13,15 @@ const routes: Routes = [
   {
     path: 'favorites',
     loadChildren: () => import('./favorites/favorites.module').then(m => m.FavoritesModule)
-  }
+  },
+  {
+    path: 'resulting_assembly',
+    loadChildren: () => import('./resulting-assembly/resulting-assembly.module').then(m => m.ResultingAssemblyModule)
+  },
+  {
+    path: 'component_card',
+    loadChildren: () => import('./component-card/component-card.module').then(m => m.ComponentCardModule)
+  },
 ];
 
 @NgModule({
