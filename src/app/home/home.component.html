@@ -1,4 +1,4 @@
-<div class="advices-page">
+<div class="home-page">
   <div class="container">
     <div class="row">
       <div class="col-md-6 offset-md-3 col-xs-12 home-title">
@@ -9,6 +9,7 @@
       </div>
       <div class="col-md-6 offset-md-4 col-xs-12 home-title home-title">
         <mat-slider
+          [(ngModel)]="pcPrice"
           tickInterval="1000"
           step="1000"
           min="0"
@@ -25,8 +26,8 @@
         <button [ngClass]="returnNewStyleFor('gaming')" (click)="changePcBuildFor('gaming')">Гейминга</button>
       </div>
       <div class="chooser-rectangle">
-<!--TODO: Исправить форму        -->
-        <form [formGroup]="chooserComponentForm" (ngSubmit)="submitForm()">
+        <!--TODO: Исправить форму        -->
+        <form [formGroup]="chooserComponentForm">
           <div class="component-block" *ngFor="let component of componentsList">
             <div class="text-block-title">{{component.componentName}}</div>
             <div class="text-block-select">
@@ -35,8 +36,8 @@
                 class="form-control form-control-md text-block-select"
               >
                 <option selected disabled>{{component.placeholder}}</option>
-                <option class="text-block-option" *ngFor="let state of componentsList" [ngValue]="state">
-                  {{ state.componentName }}
+                <option class="text-block-option" *ngFor="let state of testComponentsList[component.formControlName] || []" [ngValue]="state">
+                  {{ state }}
                 </option>
               </select>
             </div>

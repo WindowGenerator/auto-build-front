@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { ArticleListConfig, UserService } from '../core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {passwordControlValidator} from '../shared/password';
-import {componentsList, ComponentInfo} from './components-list';
+import {componentsList, ComponentInfo} from '../shared/components';
+import {testComponentsList} from '../tests/test-data/component-list-test';
 
 
 @Component({
@@ -14,9 +15,11 @@ import {componentsList, ComponentInfo} from './components-list';
 })
 export class HomeComponent implements OnInit {
   readonly componentsList = componentsList;
+  readonly testComponentsList = testComponentsList;
 
   title: String = '';
   pcBuildFor = 'work';
+  pcPrice = 0;
   chooserComponentForm: FormGroup;
 
   constructor(
@@ -35,7 +38,19 @@ export class HomeComponent implements OnInit {
   }
 
   submitForm() {
-    this.router.navigateByUrl('/resulting_assembly');
+    const params = {
+      pc_build_for: this.pcBuildFor,
+      pc_price: this.pcPrice,
+    };
+    const formValuesJSON = this.chooserComponentForm.getRawValue();
+
+    Object.entries(formValuesJSON).forEach(([key, value]) => {
+      if (value !== null) {
+        params[key] = value;
+      }
+    });
+
+    this.router.navigate(['/resulting_assembly'], { queryParams: params });
   }
 
   clearComponent(controlFieldName: string) {

@@ -7,9 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ComponentCardComponent implements OnInit {
 
+  title: String;
+
   constructor() { }
 
   ngOnInit(): void {
+    this.title = "Материнская плата Asus TUF GAMING B550-PLUS (sAM4, AMD B550)";
+
   }
 
 }
