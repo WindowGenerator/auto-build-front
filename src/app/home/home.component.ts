@@ -71,7 +71,11 @@ export class HomeComponent implements OnInit {
       return;
     }
     const oldData = this.selectedComponents[formControlName];
-    this.pcPrice = this.pcPrice - (oldData?.Price || 0) + event.Price;
+    const newPrice = this.pcPrice - (oldData?.Price || 0) + event.Price;
+    if (newPrice > this.maxPcPrice) {
+      console.log('Компоненты превышают максимальную цену');
+    }
+    this.pcPrice = newPrice;
     this.selectedComponents[formControlName] = event;
   }
 
