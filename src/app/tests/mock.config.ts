@@ -3,9 +3,6 @@ import {HttpRequest, HttpResponse} from '@angular/common/http';
 import {of} from 'rxjs';
 
 
-const profilesRegex = (new RegExp(`profiles/[0-9a-zA-Z]+`)).compile();
-
-
 const loginUser = (request: HttpRequest<any>) => {
   return of(new HttpResponse({
     status: 200, body: testUser,
@@ -52,9 +49,9 @@ export const selectHandler = (request: HttpRequest<any>) => {
       if (neededPartFromApiPath === 'user') {
         return getUser;
       }
-      // if (profilesRegex.test(neededPartFromApiPath)) {
-      //   return getProfile;
-      // }
+      if (neededPartFromApiPath.indexOf('profiles') !== -1) {
+        return getProfile;
+      }
       return null;
     case 'POST':
       if (neededPartFromApiPath === 'users/login') {
