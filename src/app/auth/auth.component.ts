@@ -1,22 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-
+import {passwordControlValidator} from '../shared/password';
 import {Errors, UserService} from '../core';
-
-
-function passwordControlValidator(control: AbstractControl): ValidationErrors | null {
-  const password_check = control.get('password_check') || null;
-  if (password_check === null) {
-    return null;
-  }
-  const password = control.get('password');
-
-  if (password.value !== password_check.value) {
-    return {passwordMismatch: true};
-  }
-  return null;
-}
 
 
 @Component({

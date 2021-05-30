@@ -5,12 +5,16 @@ import { HomeComponent } from './home.component';
 import { HomeAuthResolver } from './home-auth-resolver.service';
 import { SharedModule } from '../shared';
 import { HomeRoutingModule } from './home-routing.module';
+import { MatSliderModule } from '@angular/material/slider';
+import {NgSelectModule} from '@ng-select/ng-select';
 
 @NgModule({
-  imports: [
-    SharedModule,
-    HomeRoutingModule
-  ],
+    imports: [
+        SharedModule,
+        HomeRoutingModule,
+        MatSliderModule,
+        NgSelectModule
+    ],
   declarations: [
     HomeComponent
   ],

@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import { User, UserService } from '../../core';
-import {testUser} from '../../tests/mocks';
+import {User, UserService} from '../../core';
 
 @Component({
   selector: 'app-layout-header',
@@ -13,8 +12,11 @@ export class HeaderComponent implements OnInit {
     private userService: UserService
   ) {}
 
-  currentUser: User = testUser;
+  currentUser: User;
 
   ngOnInit() {
+    this.userService.currentUser.subscribe(data => {
+      this.currentUser = {...data};
+    });
   }
 }

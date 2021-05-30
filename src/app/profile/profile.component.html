@@ -2,8 +2,51 @@
   <div class="container page">
     <div class="row">
       <div class="col-md-6 offset-md-3 col-xs-12">
-        <h1 class="text-xs-center">{{ title }}</h1>
-
+        <h1 class="text-xs-center text-bold-custom">{{ title }}</h1>
+        <form [formGroup]="profileForm" (ngSubmit)="submitForm()">
+          <fieldset [disabled]="isSubmitting">
+            <fieldset class="form-group text-margin">
+              <p class="text-xs-center text-normal-custom">Имя пользователя</p>
+              <input
+                formControlName="username"
+                placeholder="Username"
+                class="form-control form-control-md"
+                type="text" />
+            </fieldset>
+            <fieldset class="form-group text-margin">
+              <p class="text-xs-center text-normal-custom">Старый пароль</p>
+              <input
+                formControlName="old_password"
+                placeholder="********"
+                class="form-control form-control-md"
+                type="password" />
+            </fieldset>
+            <fieldset class="form-group">
+              <p class="text-xs-center text-normal-custom">Новый пароль</p>
+              <input
+                formControlName="password"
+                placeholder="********"
+                class="form-control form-control-md"
+                type="password" />
+            </fieldset>
+            <fieldset class="form-group">
+              <p class="text-xs-center text-normal-custom">Повторите новый пароль</p>
+              <input
+                formControlName="password_check"
+                placeholder="********"
+                class="form-control form-control-md"
+                type="password" />
+            </fieldset>
+            <div class="button-center">
+              <button class="btn btn-md btn-default" [disabled]="!changeIsValid" type="submit">
+                {{ submitButtonName }}
+              </button>
+              <button class="btn btn-md btn-primary" (click)="logout()">
+                Выйти из аккаунта
+              </button>
+            </div>
+          </fieldset>
+        </form>
       </div>
     </div>
   </div>

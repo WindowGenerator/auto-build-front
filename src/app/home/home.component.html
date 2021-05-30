@@ -1,8 +1,70 @@
-<div class="advices-page">
-  <div class="container page">
+<div class="home-page">
+  <div class="container">
     <div class="row">
-      <div class="col-md-6 offset-md-3 col-xs-12">
-        <h1 class="text-xs-center">{{ title }}</h1>
+      <div class="col-md-6 offset-md-3 col-xs-12 home-title">
+        <p class="text-xs-center text-bold-custom">{{ title }}</p>
+      </div>
+      <div class="col-md-6 offset-md-3 col-xs-12 home-title">
+        <h4 class="text-xs-center">Выберете бюджет, руб</h4>
+      </div>
+      <div class="col-md-6 offset-md-4 col-xs-12 home-title home-title">
+        <mat-slider
+          (change)="onChangePriceEvent($event)"
+          [(ngModel)]="maxPcPrice"
+          tickInterval="1000"
+          step="1000"
+          min="0"
+          max="400000"
+          thumbLabel
+          aria-label="unit(s)">
+        </mat-slider>
+      </div>
+      <div class="col-md-6 offset-md-3 col-xs-12 home-title">
+        <h4 class="text-xs-center">ПК вам нужен для</h4>
+      </div>
+      <div class="col-md-4 offset-md-4 col-xs-12 home-title choice-buttons">
+        <button [ngClass]="returnNewStyleFor('work')" (click)="changePcBuildFor('work')">Работы</button>
+        <button [ngClass]="returnNewStyleFor('gaming')" (click)="changePcBuildFor('gaming')">Гейминга</button>
+      </div>
+      <div class="chooser-rectangle">
+        <!--TODO: Исправить форму        -->
+        <form [formGroup]="chooserComponentForm">
+          <div class="component-block" *ngFor="let component of componentsList">
+            <div class="text-block-title">{{component.componentName}}</div>
+            <div class="text-block-select">
+              <ng-select
+                placeholder="{{component.placeholder}}"
+                formControlName="{{component.formControlName}}"
+                [items]="formNameToMethodToGet[component.formControlName] || []"
+                (change)="onChangeComponentEvent($event, component.formControlName)"
+
+                bindLabel="Name"
+                bindValue="ItemId"
+              >
+                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                  <span class="ng-value-label">{{item.Name + ' Price: '}}</span>
+                  <strong><span class="ng-value-label">{{item.Price}}</span></strong>
+                  <span class="ng-value-icon right" (click)="clear(item)">×</span>
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item">
+                  <span class="ng-option-label">{{item.Name + ' Price: '}}</span>
+                  <strong><span class="ng-option-label">{{item.Price}}</span></strong>
+                </ng-template>
+              </ng-select>
+            </div>
+            <div class="text-block-button">
+              <button class="button-with-image" (click)="clearComponent(component.formControlName)"></button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-4 offset-md-4 col-xs-12 home-title choice-buttons">
+        <button
+          class="btn btn-md btn-primary"
+          type="submit"
+          (click)="submitForm()"
+        >Подобрать комплектующие
+        </button>
       </div>
     </div>
   </div>

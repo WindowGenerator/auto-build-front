@@ -1,0 +1,32 @@
+<div class="resulting-assembly-page">
+  <div class="container page">
+    <div class="row">
+      <div class="col-md-6 offset-md-3 col-xs-12">
+        <p class="text-xs-center text-bold-custom">{{ title }}</p>
+      </div>
+      <div class="chooser-rectangle">
+        <div *ngFor="let component of componentsList">
+          <div class="component-block" *ngIf="!!componentsDataList[component.formControlName]">
+            <div class="component-block__title">{{component.componentName}}</div>
+            <div class="component-main-info-block">
+              <img class="component-main-info-block__img" src="{{componentsDataList[component.formControlName].PictureUrl}}">
+              <a (click)="goToComponentCard(component.componentName, 'a')" class="component-main-info-block__reference">{{componentsDataList[component.formControlName].Name}}</a>
+              <span class="component-main-info-block__price">{{componentsDataList[component.formControlName].Price}} руб.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="all-price right">
+        Итого:<br> {{commonInfoAboutBuildPc?.pc_price}} руб.
+      </div>
+      <div class="col-md-4 offset-md-4 col-xs-12 home-title choice-buttons">
+        <button
+          class="btn btn-md btn-primary"
+          type="submit"
+          (click)="addComponentsToFavorites()"
+        >Добавить в избранное
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

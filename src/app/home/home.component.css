@@ -1,0 +1,87 @@
+.home-title {
+  margin-bottom: 25px;
+}
+
+/*TODO: вынести в общие стили*/
+.chooser-rectangle {
+  width: 1200px;
+  /*height: 270px;*/
+
+  background: var(--main-background-cell);
+  /*border: 1px solid var(--main-background-cell-border);*/
+  /*box-sizing: border-box;*/
+
+  display: flex;
+  margin-bottom: 30px;
+  flex-direction: column;
+
+  border-radius: 15px;
+}
+
+/*TODO: вынести в общие стили*/
+.component-block {
+  margin: 50px 150px 50px 50px;
+
+  display: flex;
+
+  justify-content: space-between;
+  flex-flow: row wrap;
+}
+
+/*TODO: вынести в общие стили*/
+.text-block-title {
+  flex-grow: 0; /* default 0 */
+  width: 125px;
+}
+
+.text-block-select {
+  width: 700px;
+  /*background: var(--main-background-cell);*/
+  border-radius: 15px;
+  border-width: 1px;
+  /*border-color: var(--main-text-common);*/
+}
+
+.text-block-option {
+  background: var(--main-background-cell);
+  border-radius: 15px;
+  border-width: 1px;
+  border-color: var(--main-text-common);
+}
+
+.text-block-button {
+  flex-grow: 0; /* default 0 */
+}
+
+.button-with-image {
+  font-size: 30px;
+  width: 1em;
+  height: 1em;
+  border: none;
+  padding: 0;
+  background: transparent;
+}
+.button-with-image::before {
+  mask: url("~assets/resources/buttons/remove-items.svg") top left / cover;
+  background: #333;
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+mat-slider {
+  width: 350px;
+}
+
+.choice-buttons {
+  display: flex;
+
+  width: 350px;
+
+  margin-bottom: 30px;
+  flex-direction: row;
+
+  justify-content: space-between;
+  flex-flow: row wrap;
+}

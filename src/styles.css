@@ -5,6 +5,8 @@
 
   --main-white: #FFFFFF;
   --main-text-color: var(--main-purple-background);
+  --main-text-common: #1A202C;
+  --main-lilac-color: #52506a;
 
   --main-primary-normal: var(--main-purple-background);
   --main-primary-hover: var(--main-purple-background);
@@ -16,6 +18,8 @@
 
   --main-background-cell: #D2D9F1;
   --main-background-cell-border: #52506A;
+
+  --main-background-cell-favorites: #D7BDF9;
 
 }
 
@@ -115,6 +119,7 @@
 .nav-item {
   font-family: Manrope;
   font-style: normal;
+  font-weight: normal;
 
   color: #1A202C;
 }
@@ -126,6 +131,10 @@
 }
 
 .text-normal-custom {
+  font-family: Manrope;
+  font-style: normal;
+  font-weight: normal;
+
   font-size: 16px;
   line-height: 19px;
 }
@@ -143,3 +152,6 @@ a:focus,
 a:hover {
   color: #2F80ED;
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Manrope, "Helvetica Neue", sans-serif; }

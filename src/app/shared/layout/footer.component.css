@@ -1,3 +1,9 @@
+.large-container {
+  height: 200px;
+  background: var(--main-white) !important;
+  z-index: -1;
+}
+
 .footer-custom {
   /* Rectangle 10 */
   height: 100px;
@@ -5,7 +11,7 @@
   left: 0;
   bottom: 0;
 
-  background: #52506A;
+  background: var(--main-lilac-color);
 }
 .container {
   margin-top: 25px;
