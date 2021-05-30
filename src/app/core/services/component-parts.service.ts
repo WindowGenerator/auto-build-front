@@ -14,6 +14,7 @@ export class ComponentPartsService {
   constructor(private http: HttpClient) {
 
   }
+
   private readonly baseUrl = 'https://api.retailrocket.net/api/2.0/recommendation/popular/52e0e8141e994426487779d9';
 
   private static sortComponentsPartsDataList(componentsPartsData: Array<ComponentPartsModel>): Array<ComponentPartsModel> {
@@ -84,5 +85,59 @@ export class ComponentPartsService {
     return this.http.get<any>(url, requestOptions).pipe(map(response => {
       console.log(response);
     }));
+  }
+
+  getPriceByComponentParts(selectedComponents: { [key: string]: ComponentPartsModel }): number {
+    let currentPrice = 0;
+    for (const [formFieldName, componentPart] of Object.entries(selectedComponents)) {
+      currentPrice += componentPart.Price;
+    }
+    return currentPrice;
+  }
+
+  selectComponents(
+    selectedComponents: { [key: string]: ComponentPartsModel },
+    allComponents: { [key: string]: Array<ComponentPartsModel> },
+    maxPricePc: number,
+    pcBuildFor: string,
+  ): { [key: string]: ComponentPartsModel } {
+    let currentPrice = 0;
+    const excludeFields = new Set();
+    const newSelectedComponents = {...selectedComponents};
+
+    if (pcBuildFor === 'work') {
+      excludeFields.add('gpu');
+      if (!!newSelectedComponents['gpu']) {
+        delete newSelectedComponents['gpu'];
+      }
+    }
+
+    for (const [formFieldName, componentPart] of Object.entries(newSelectedComponents)) {
+      excludeFields.add(formFieldName);
+      currentPrice += componentPart.Price;
+    }
+
+    let componentIndex = 0;
+    let oldPrice = 0;
+    while (maxPricePc > currentPrice) {
+      for (const [formFieldName, componentParts] of Object.entries(allComponents)) {
+        if (excludeFields.has(formFieldName)) {
+          continue;
+        }
+        if (componentIndex + 1 > componentParts.length) {
+          excludeFields.add(formFieldName);
+          continue;
+        }
+        const componentPart = componentParts[componentIndex];
+        currentPrice += (componentPart.Price - (newSelectedComponents[formFieldName]?.Price || 0));
+        newSelectedComponents[formFieldName] = componentPart;
+      }
+      if ((oldPrice === currentPrice) && !!excludeFields) {
+        break;
+      }
+      oldPrice = currentPrice;
+      componentIndex++;
+    }
+    return newSelectedComponents;
   }
 }

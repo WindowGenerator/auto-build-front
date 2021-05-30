@@ -24,7 +24,7 @@
 }
 
 .component-main-info-block {
-  width: 800px;
+  width: 900px;
   display: flex;
 
   justify-content: space-between;
@@ -52,9 +52,15 @@
   font-style: normal;
   font-weight: normal;
 
-  font-size: 18px;
+  font-size: 17px;
   line-height: 27px;
   text-decoration-line: underline;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  width: 500px;
 }
 
 .component-main-info-block__price {
@@ -68,6 +74,7 @@
   font-weight: bold;
   font-size: 17px;
   line-height: 25px;
+  margin-top: 15px;
 
   transform: translateX(50%) translateY(-50%);
 }

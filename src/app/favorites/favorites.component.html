@@ -5,14 +5,15 @@
         <p class="text-xs-center text-bold-custom">{{ title }}</p>
       </div>
       <div class="article-rectangle" *ngFor="let favoriteItem of favoritesComponentsList">
-        <img class="image-article-title" src="{{favoriteItem.src}}" alt="">
+        <img class="image-article-title" src="{{favoriteItem.PictureUrl}}" alt="">
         <div class="text-block">
           <a class="text-block-title" (click)="goToComponentCard()">
-            {{favoriteItem.name}}
+            {{favoriteItem.Name}}
           </a>
           <p class="text-block-content">
-            От {{favoriteItem.cost}} руб.
+            От {{favoriteItem.Price}} руб.
           </p>
+          <button class="button-with-image" (click)="removeFromFavorite(favoriteItem.ItemId)"></button>
         </div>
       </div>
     </div>
