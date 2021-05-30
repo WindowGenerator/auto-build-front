@@ -26,6 +26,7 @@
     "@angular/platform-browser": "11.2.8",
     "@angular/platform-browser-dynamic": "11.2.8",
     "@angular/router": "11.2.8",
+    "@ng-select/ng-select": "^6.1.0",
     "core-js": "^2.4.1",
     "marked": "^0.3.9",
     "rxjs": "^6.4.0",

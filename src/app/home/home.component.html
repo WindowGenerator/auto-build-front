@@ -9,7 +9,8 @@
       </div>
       <div class="col-md-6 offset-md-4 col-xs-12 home-title home-title">
         <mat-slider
-          [(ngModel)]="pcPrice"
+          (change)="onChangePriceEvent($event)"
+          [(ngModel)]="maxPcPrice"
           tickInterval="1000"
           step="1000"
           min="0"
@@ -31,15 +32,25 @@
           <div class="component-block" *ngFor="let component of componentsList">
             <div class="text-block-title">{{component.componentName}}</div>
             <div class="text-block-select">
-              <select
+              <ng-select
+                placeholder="{{component.placeholder}}"
                 formControlName="{{component.formControlName}}"
-                class="form-control form-control-md text-block-select"
+                [items]="formNameToMethodToGet[component.formControlName] || []"
+                (change)="onChangeComponentEvent($event, component.formControlName)"
+
+                bindLabel="Name"
+                bindValue="ItemId"
               >
-                <option selected disabled>{{component.placeholder}}</option>
-                <option class="text-block-option" *ngFor="let state of testComponentsList[component.formControlName] || []" [ngValue]="state">
-                  {{ state }}
-                </option>
-              </select>
+                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                  <span class="ng-value-label">{{item.Name + ' Price: '}}</span>
+                  <strong><span class="ng-value-label">{{item.Price}}</span></strong>
+                  <span class="ng-value-icon right" (click)="clear(item)">×</span>
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item">
+                  <span class="ng-option-label">{{item.Name + ' Price: '}}</span>
+                  <strong><span class="ng-option-label">{{item.Price}}</span></strong>
+                </ng-template>
+              </ng-select>
             </div>
             <div class="text-block-button">
               <button class="button-with-image" (click)="clearComponent(component.formControlName)"></button>

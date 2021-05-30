@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {componentsList} from '../shared/components/components-list';
-import {Router} from '@angular/router';
+import {componentsList} from '../shared/components';
+import {ActivatedRoute, Params, Router} from '@angular/router';
+import {CommonInfoAboutBuildPc, ComponentDataService} from '../core/services';
+import {ComponentPartsModel} from '../core/models';
 
 @Component({
   selector: 'app-resulting-assembly',
@@ -9,15 +11,22 @@ import {Router} from '@angular/router';
 })
 export class ResultingAssemblyComponent implements OnInit {
   readonly componentsList = componentsList;
+
+  componentsDataList: { [key: string]: ComponentPartsModel } = {};
+  commonInfoAboutBuildPc: CommonInfoAboutBuildPc;
   title: String = '';
 
   constructor(
+    private activatedRoute: ActivatedRoute,
     private router: Router,
+    private componentDataService: ComponentDataService,
   ) {
   }
 
   ngOnInit(): void {
     this.title = 'Полученная сборка';
+    this.commonInfoAboutBuildPc = this.componentDataService.commonInfoAboutBuildPc;
+    this.componentsDataList = this.componentDataService.selectedComponents;
   }
 
   submitForm() {

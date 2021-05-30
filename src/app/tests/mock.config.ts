@@ -52,9 +52,9 @@ export const selectHandler = (request: HttpRequest<any>) => {
       if (neededPartFromApiPath === 'user') {
         return getUser;
       }
-      if (profilesRegex.test(neededPartFromApiPath)) {
-        return getProfile;
-      }
+      // if (profilesRegex.test(neededPartFromApiPath)) {
+      //   return getProfile;
+      // }
       return null;
     case 'POST':
       if (neededPartFromApiPath === 'users/login') {

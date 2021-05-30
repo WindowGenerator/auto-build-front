@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {favoritesTestList, FavoriteItem} from './test-data';
+import {Router} from '@angular/router';
+
 
 @Component({
   selector: 'app-favorites',
@@ -7,14 +10,18 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class FavoritesComponent implements OnInit {
+  public title: String = '';
+  public favoritesComponentsList: Array<any> = favoritesTestList;
 
-  title: String = '';
-  favoritesComponentsList: Array<any> = [];
-
-  constructor() { }
+  constructor(private router: Router) {
+  }
 
   ngOnInit(): void {
     this.title = 'Избранное';
+  }
+
+  goToComponentCard() {
+    this.router.navigateByUrl('component_card');
   }
 
 }

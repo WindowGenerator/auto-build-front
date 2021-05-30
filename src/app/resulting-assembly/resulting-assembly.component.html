@@ -5,17 +5,19 @@
         <p class="text-xs-center text-bold-custom">{{ title }}</p>
       </div>
       <div class="chooser-rectangle">
-        <div  class="component-block" *ngFor="let component of componentsList">
-          <div class="component-block__title">{{component.componentName}}</div>
-          <div class="component-main-info-block">
-            <img src="assets/resources/test-resources/test-resulting-assembly.png">
-            <a (click)="goToComponentCard(component.componentName, 'a')" class="component-main-info-block__reference">AMD Ryzen 7 3800X 3.9(4.5)GHz 32MB sAM4 Tray (100-000000025)</a>
-            <span class="component-main-info-block__price">30 516  руб</span>
+        <div *ngFor="let component of componentsList">
+          <div class="component-block" *ngIf="!!componentsDataList[component.formControlName]">
+            <div class="component-block__title">{{component.componentName}}</div>
+            <div class="component-main-info-block">
+              <img class="component-main-info-block__img" src="{{componentsDataList[component.formControlName].PictureUrl}}">
+              <a (click)="goToComponentCard(component.componentName, 'a')" class="component-main-info-block__reference">{{componentsDataList[component.formControlName].Name}}</a>
+              <span class="component-main-info-block__price">{{componentsDataList[component.formControlName].Price}} руб.</span>
+            </div>
           </div>
         </div>
       </div>
-      <div class="all-price">
-        Итого:<br> {{1488}} руб
+      <div class="all-price right">
+        Итого:<br> {{commonInfoAboutBuildPc?.pc_price}} руб.
       </div>
       <div class="col-md-4 offset-md-4 col-xs-12 home-title choice-buttons">
         <button

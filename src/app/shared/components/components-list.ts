@@ -1,5 +1,34 @@
+export type FormControlComponentType = 'cpu'
+  | 'mom'
+  | 'gpu'
+  | 'ram'
+  | 'power_core'
+  | 'cold_system'
+  | 'ssd'
+  | 'hdd'
+  | 'case'
+  | 'monitor'
+  | 'keyboard'
+  | 'mouse';
+
+
+export const FormControlComponentTypeList: Array<FormControlComponentType> = [
+  'cpu',
+  'mom',
+  'gpu',
+  'ram',
+  'power_core',
+  'cold_system',
+  'ssd',
+  'hdd',
+  'case',
+  'monitor',
+  'keyboard',
+  'mouse'
+];
+
 export interface ComponentInfo {
-  formControlName: string;
+  formControlName: FormControlComponentType;
   componentName: string;
   placeholder: string;
 }
@@ -18,3 +47,18 @@ export const componentsList: ComponentInfo[] = [
   {formControlName: 'keyboard', componentName: 'Клавиатура', placeholder: 'Выбрать клавиатуру'},
   {formControlName: 'mouse', componentName: 'Мышка', placeholder: 'Выбрать мышку'},
 ];
+
+export const componentToCategoryId: Map<FormControlComponentType, number> = new Map([
+  ['cpu', 421],
+  ['mom', 42],
+  ['gpu', 12482],
+  ['ram', 541],
+  ['power_core', 12507],
+  ['cold_system', 12483],
+  ['ssd', 12547],
+  ['hdd', 3587],
+  ['case', 543],
+  ['monitor', 348],
+  ['keyboard', 348],
+  ['mouse', 349]
+]);

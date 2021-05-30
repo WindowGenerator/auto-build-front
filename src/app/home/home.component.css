@@ -36,13 +36,10 @@
 
 .text-block-select {
   width: 700px;
-}
-
-.text-block-select {
-  background: var(--main-background-cell);
+  /*background: var(--main-background-cell);*/
   border-radius: 15px;
   border-width: 1px;
-  border-color: var(--main-text-common);
+  /*border-color: var(--main-text-common);*/
 }
 
 .text-block-option {
