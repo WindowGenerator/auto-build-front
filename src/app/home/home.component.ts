@@ -1,13 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {componentsList} from '../shared/components';
-import {testComponentsList} from '../tests/test-data/component-list-test';
-import {ComponentPartsService, NgOnDestroy, ComponentDataService, CommonInfoAboutBuildPc} from '../core/services';
+import {componentsList, FormControlComponentType, FormControlComponentTypeList} from '../shared/components';
+import {CommonInfoAboutBuildPc, ComponentDataService, ComponentPartsService} from '../core/services';
 import {ComponentPartsModel} from '../core/models';
-import {FormControlComponentType, componentToCategoryId, FormControlComponentTypeList} from '../shared/components';
 import {zip} from '../shared/helpers';
-import {takeUntil} from 'rxjs/operators';
 import {forkJoin, Observable} from 'rxjs';
 
 
@@ -26,7 +23,7 @@ export class HomeComponent implements OnInit {
   chooserComponentForm: FormGroup;
   selectedComponents: { [key: string]: ComponentPartsModel } = {};
 
-  formNameToMethodToGet: Map<FormControlComponentType, Array<ComponentPartsModel>> = new Map();
+  formNameToMethodToGet: { [key: string]: Array<ComponentPartsModel> } = {};
 
   constructor(
     private router: Router,
@@ -43,25 +40,24 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.title = 'Подобрать комплектующие';
-
     this.reloadData();
   }
 
   submitForm() {
+    // TODO: Полный бред. Зачем мне хранить данные в форме, если я по итогу данные забираю из selectedComponents
+    this.componentDataService.selectedComponents = this.componentPartsService.selectComponents(
+      this.selectedComponents, this.formNameToMethodToGet, this.maxPcPrice, this.pcBuildFor
+    );
+
+    this.pcPrice = this.componentPartsService.getPriceByComponentParts(this.componentDataService.selectedComponents);
+
     const params = {
       pc_build_for: this.pcBuildFor,
       max_pc_price: this.maxPcPrice,
       pc_price: this.pcPrice
     };
-    const formValuesJSON = this.chooserComponentForm.getRawValue();
 
-    Object.entries(formValuesJSON).forEach(([key, value]) => {
-      if (value !== null) {
-        params[key] = value;
-      }
-    });
     this.componentDataService.commonInfoAboutBuildPc = params as CommonInfoAboutBuildPc;
-    this.componentDataService.selectedComponents = this.selectedComponents;
 
     this.router.navigate(['/resulting_assembly'], {queryParams: params});
   }
@@ -73,7 +69,8 @@ export class HomeComponent implements OnInit {
     const oldData = this.selectedComponents[formControlName];
     const newPrice = this.pcPrice - (oldData?.Price || 0) + event.Price;
     if (newPrice > this.maxPcPrice) {
-      console.log('Компоненты превышают максимальную цену');
+      alert('Нельзя выбрать комплектующих на сумму большую максимальной');
+      return;
     }
     this.pcPrice = newPrice;
     this.selectedComponents[formControlName] = event;
@@ -84,16 +81,28 @@ export class HomeComponent implements OnInit {
       return;
     }
     const newPrice = event?.value;
-    let priceSelectedComponents = 0;
 
-    for (const [_, ComponentPart] of Object.entries(this.selectedComponents)) {
-      priceSelectedComponents += ComponentPart.Price;
+    let minPriceSelectedComponents = 0;
+    const excludeFields = new Set();
+
+    for (const [formFieldName, componentPart] of Object.entries(this.selectedComponents)) {
+      minPriceSelectedComponents += componentPart.Price;
+      excludeFields.add(formFieldName);
     }
 
-    if (newPrice < priceSelectedComponents) {
-      console.log('ну блииин');
+    for (const [formFieldName, componentParts] of Object.entries(this.formNameToMethodToGet)) {
+      if (excludeFields.has(formFieldName)) {
+        continue;
+      }
+      const firstComponent = componentParts[0];
+      minPriceSelectedComponents += firstComponent.Price;
+    }
+
+    if (newPrice < minPriceSelectedComponents) {
+      alert('Нельзя изменить сумму, чтобы минимум по сумме превышал минимум по цене');
       return;
     }
+
     this.maxPcPrice = newPrice;
   }
 

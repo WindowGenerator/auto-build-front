@@ -61,6 +61,7 @@
   padding: 0;
   background: transparent;
 }
+
 .button-with-image::before {
   mask: url("~assets/resources/buttons/remove-items.svg") top left / cover;
   background: #333;

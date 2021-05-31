@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {componentsList} from '../shared/components';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import {CommonInfoAboutBuildPc, ComponentDataService} from '../core/services';
+import {CommonInfoAboutBuildPc, ComponentDataService, FavoritesDataService} from '../core/services';
 import {ComponentPartsModel} from '../core/models';
 
 @Component({
@@ -20,6 +20,7 @@ export class ResultingAssemblyComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private componentDataService: ComponentDataService,
+    private favoritesDataService: FavoritesDataService,
   ) {
   }
 
@@ -34,7 +35,11 @@ export class ResultingAssemblyComponent implements OnInit {
   }
 
   addComponentsToFavorites() {
-
+    const favoritesComponentsParts = [];
+    for (const [_, componentPart] of Object.entries(this.componentsDataList)) {
+      favoritesComponentsParts.push(componentPart);
+    }
+    this.favoritesDataService.favoritesComponentsParts = favoritesComponentsParts;
     this.router.navigateByUrl('favorites');
   }
 
