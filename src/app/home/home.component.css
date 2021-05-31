@@ -4,7 +4,7 @@
 
 /*TODO: вынести в общие стили*/
 .chooser-rectangle {
-  width: 1200px;
+  width: 100%;
   /*height: 270px;*/
 
   background: var(--main-background-cell);
@@ -86,3 +86,5 @@ mat-slider {
   justify-content: space-between;
   flex-flow: row wrap;
 }
+
+

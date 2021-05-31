@@ -9,9 +9,20 @@
           <div class="component-block" *ngIf="!!componentsDataList[component.formControlName]">
             <div class="component-block__title">{{component.componentName}}</div>
             <div class="component-main-info-block">
-              <img class="component-main-info-block__img" src="{{componentsDataList[component.formControlName].PictureUrl}}">
-              <a (click)="goToComponentCard(component.componentName, 'a')" class="component-main-info-block__reference">{{componentsDataList[component.formControlName].Name}}</a>
-              <span class="component-main-info-block__price">{{componentsDataList[component.formControlName].Price}} руб.</span>
+              <div class="component-main-info-block__img-wrapper">
+                <img
+                  src="{{componentsDataList[component.formControlName].PictureUrl}}"
+                >
+              </div>
+              <a
+                (click)="goToComponentCard(component.componentName, 'a')"
+                class="component-main-info-block__reference">
+                {{componentsDataList[component.formControlName].Name}}
+              </a>
+              <span
+                class="component-main-info-block__price">
+                {{componentsDataList[component.formControlName].Price}} руб.
+              </span>
             </div>
           </div>
         </div>

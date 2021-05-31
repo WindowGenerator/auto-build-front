@@ -5,7 +5,9 @@
         <p class="text-xs-center text-bold-custom">{{ title }}</p>
       </div>
       <div class="article-rectangle" *ngFor="let favoriteItem of favoritesComponentsList">
-        <img class="image-article-title" src="{{favoriteItem.PictureUrl}}" alt="">
+        <div class="image-article-title">
+          <img src="{{favoriteItem.PictureUrl}}" alt="">
+        </div>
         <div class="text-block">
           <a class="text-block-title" (click)="goToComponentCard()">
             {{favoriteItem.Name}}
