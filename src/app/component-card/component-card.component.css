@@ -19,8 +19,9 @@
     border: 1px solid black;
 }
 
-.characteristics {
-    padding-top: 20px;
+.characteristics-list {
+    font-size: 18px;
+    padding-top: 30px;
     margin-left: 25%;
 }
 
@@ -29,4 +30,7 @@
     margin-left: 50px;
 }
 
+.characteristic {
+    margin-top: 30px;
+}
 
