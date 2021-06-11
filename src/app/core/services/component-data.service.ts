@@ -8,6 +8,9 @@ export class ComponentDataService {
   _commonInfoAboutBuildPc: CommonInfoAboutBuildPc;
   _selectedComponents: { [key: string]: ComponentPartsModel } = {};
 
+  private readonly commonInfoAboutBuildPcKey = 'common_info_about_build_pc';
+  private readonly selectedComponentsKey = 'selected_components';
+
   constructor() {
   }
 
@@ -15,11 +18,11 @@ export class ComponentDataService {
     this._commonInfoAboutBuildPc = commonInfoAboutBuildPcParams;
 
     const toSave = JSON.stringify(this._commonInfoAboutBuildPc);
-    localStorage.setItem('commonInfoAboutBuildPc', toSave);
+    localStorage.setItem(this.commonInfoAboutBuildPcKey, toSave);
   }
 
   get commonInfoAboutBuildPc() {
-    const toLoad = localStorage.getItem('commonInfoAboutBuildPc') || null;
+    const toLoad = localStorage.getItem(this.commonInfoAboutBuildPcKey) || null;
     if (toLoad !== null) {
       this._commonInfoAboutBuildPc = JSON.parse(toLoad);
     }
@@ -30,11 +33,11 @@ export class ComponentDataService {
     this._selectedComponents = selectedComponentsParams;
 
     const toSave = JSON.stringify(this._selectedComponents);
-    localStorage.setItem('selectedComponents', toSave);
+    localStorage.setItem(this.selectedComponentsKey, toSave);
   }
 
   get selectedComponents() {
-    const toLoad = localStorage.getItem('selectedComponents') || null;
+    const toLoad = localStorage.getItem(this.selectedComponentsKey) || null;
     if (toLoad !== null) {
       this._selectedComponents = JSON.parse(toLoad);
     }

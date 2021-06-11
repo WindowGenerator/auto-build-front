@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {FormBuilder, FormGroup} from '@angular/forms';
 import {componentsList, FormControlComponentType, FormControlComponentTypeList} from '../shared/components';
-import {CommonInfoAboutBuildPc, ComponentDataService, ComponentPartsService} from '../core/services';
+import {CommonInfoAboutBuildPc, ComponentDataService, ComponentPartsService, PcBuildForType} from '../core/services';
 import {ComponentPartsModel} from '../core/models';
 import {zip} from '../shared/helpers';
 import {forkJoin, Observable} from 'rxjs';
@@ -17,25 +16,20 @@ export class HomeComponent implements OnInit {
   readonly componentsList = componentsList;
 
   title: String = '';
-  pcBuildFor = 'work';
-  maxPcPrice = 0;
-  pcPrice = 0;
-  chooserComponentForm: FormGroup;
+
+  commonInfoAboutBuildPc: CommonInfoAboutBuildPc = {
+    pc_build_for: 'work', max_pc_price: 0, pc_price: 0
+  } as CommonInfoAboutBuildPc;
+
   selectedComponents: { [key: string]: ComponentPartsModel } = {};
 
   formNameToMethodToGet: { [key: string]: Array<ComponentPartsModel> } = {};
 
   constructor(
     private router: Router,
-    private fb: FormBuilder,
     private componentPartsService: ComponentPartsService,
     private componentDataService: ComponentDataService,
   ) {
-    const formStandardData = {};
-    componentsList.forEach(component => {
-      formStandardData[component.formControlName] = [null];
-    });
-    this.chooserComponentForm = this.fb.group(formStandardData);
   }
 
   ngOnInit() {
@@ -43,23 +37,22 @@ export class HomeComponent implements OnInit {
     this.reloadData();
   }
 
-  submitForm() {
+  pickUpPcComponents() {
     // TODO: Полный бред. Зачем мне хранить данные в форме, если я по итогу данные забираю из selectedComponents
     this.componentDataService.selectedComponents = this.componentPartsService.selectComponents(
-      this.selectedComponents, this.formNameToMethodToGet, this.maxPcPrice, this.pcBuildFor
+      this.selectedComponents,
+      this.formNameToMethodToGet,
+      this.commonInfoAboutBuildPc.max_pc_price,
+      this.commonInfoAboutBuildPc.pc_build_for
     );
 
-    this.pcPrice = this.componentPartsService.getPriceByComponentParts(this.componentDataService.selectedComponents);
+    this.commonInfoAboutBuildPc.pc_price = this.componentPartsService.getPriceByComponentParts(
+      this.componentDataService.selectedComponents
+    );
 
-    const params = {
-      pc_build_for: this.pcBuildFor,
-      max_pc_price: this.maxPcPrice,
-      pc_price: this.pcPrice
-    };
+    this.componentDataService.commonInfoAboutBuildPc = this.commonInfoAboutBuildPc;
 
-    this.componentDataService.commonInfoAboutBuildPc = params as CommonInfoAboutBuildPc;
-
-    this.router.navigate(['/resulting_assembly'], {queryParams: params});
+    this.router.navigate(['/resulting_assembly']);
   }
 
   onChangeComponentEvent(event: ComponentPartsModel, formControlName: FormControlComponentType) {
@@ -67,12 +60,12 @@ export class HomeComponent implements OnInit {
       return;
     }
     const oldData = this.selectedComponents[formControlName];
-    const newPrice = this.pcPrice - (oldData?.Price || 0) + event.Price;
-    if (newPrice > this.maxPcPrice) {
+    const newPrice = this.commonInfoAboutBuildPc.pc_price - (oldData?.Price || 0) + event.Price;
+    if (newPrice > this.commonInfoAboutBuildPc.max_pc_price) {
       alert('Нельзя выбрать комплектующих на сумму большую максимальной');
       return;
     }
-    this.pcPrice = newPrice;
+    this.commonInfoAboutBuildPc.pc_price = newPrice;
     this.selectedComponents[formControlName] = event;
   }
 
@@ -103,23 +96,23 @@ export class HomeComponent implements OnInit {
       return;
     }
 
-    this.maxPcPrice = newPrice;
+    this.commonInfoAboutBuildPc.max_pc_price = newPrice;
   }
 
   clearComponent(controlFieldName: string) {
-    this.chooserComponentForm.get(controlFieldName).setValue(null);
+    // this.chooserComponentForm.get(controlFieldName).setValue(null);
   }
 
   returnNewStyleFor(pcBuildFor: string) {
-    if (this.pcBuildFor !== pcBuildFor) {
+    if (this.commonInfoAboutBuildPc.pc_build_for !== pcBuildFor) {
       return 'btn btn-md btn-default';
     } else {
       return 'btn btn-md btn-primary';
     }
   }
 
-  changePcBuildFor(pcBuildFor: string) {
-    this.pcBuildFor = pcBuildFor;
+  changePcBuildFor(pcBuildFor: PcBuildForType) {
+    this.commonInfoAboutBuildPc.pc_build_for = pcBuildFor;
 
   }
 
