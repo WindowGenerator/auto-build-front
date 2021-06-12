@@ -26,11 +26,24 @@
 }
 
 .add-to-fav {
-    margin-top: 100%;
+    margin-top: 80%;
     margin-left: 50px;
 }
 
 .characteristic {
     margin-top: 30px;
+}
+
+.site-link {
+    display: inline;
+    font-size: 24px;
+    font-weight: bold;
+    font-family: Manrope, "Helvetica Neue", sans-serif;
+    margin-left: 50px;
+    padding-right: 20px;
+}
+
+.info {
+    padding-top: 90px;
 }
 

@@ -78,7 +78,7 @@ mat-slider {
 .choice-buttons {
   display: flex;
 
-  width: 350px;
+  width: 400px;
 
   margin-bottom: 30px;
   flex-direction: row;
