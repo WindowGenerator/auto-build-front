@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {favoritesTestList, FavoriteItem} from './test-data';
 import {Router} from '@angular/router';
 import {FavoritesDataService} from '../core/services';
 import {ComponentPartsModel} from '../core/models';
@@ -21,7 +20,7 @@ export class FavoritesComponent implements OnInit {
 
   ngOnInit(): void {
     this.title = 'Избранное';
-    this.favoritesComponentsList = this.favoritesDataService.favoritesComponentsParts;
+    this.favoritesComponentsList = this.favoritesDataService.loadFavoritesFromCache();
   }
 
   goToComponentCard() {
@@ -29,8 +28,8 @@ export class FavoritesComponent implements OnInit {
   }
 
   removeFromFavorite(componentItemId: number) {
-    this.favoritesDataService.removeFavoriteElement(componentItemId);
-    this.favoritesComponentsList = [...this.favoritesDataService.favoritesComponentsParts];
+    this.favoritesDataService.removeFavoriteElementFromCache(componentItemId);
+    this.favoritesComponentsList = [...this.favoritesDataService.loadFavoritesFromCache()];
   }
 
 }

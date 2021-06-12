@@ -40,11 +40,27 @@
   line-height: 25px;
 }
 
-.component-main-info-block__img {
-  width: 200px;
-  height: 200px;
+.component-main-info-block__img-wrapper {
+  position: relative;
 
+  height: auto;
+  width: auto;
+
+  min-width: 200px;
+  min-height: 200px;
+
+  background-color: white !important;
+
+  max-height: 200px;
+  overflow: hidden !important;
   border-radius: 50%;
+}
+
+.component-main-info-block__img-wrapper img {
+  position: absolute;
+  top: 25%;
+  margin-top: -0.625em;
+  width: 200px;
 }
 
 .component-main-info-block__reference {

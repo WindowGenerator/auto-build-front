@@ -39,7 +39,7 @@ export class ResultingAssemblyComponent implements OnInit {
     for (const [_, componentPart] of Object.entries(this.componentsDataList)) {
       favoritesComponentsParts.push(componentPart);
     }
-    this.favoritesDataService.favoritesComponentsParts = favoritesComponentsParts;
+    this.favoritesDataService.saveFavoritesToCache(favoritesComponentsParts);
     this.router.navigateByUrl('favorites');
   }
 
