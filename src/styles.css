@@ -155,3 +155,46 @@ a:hover {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Manrope, "Helvetica Neue", sans-serif; }
+
+
+.mat-slider.mat-slider-horizontal .mat-slider-wrapper {
+  top: 18px !important;
+}
+.mat-slider.mat-slider-horizontal .mat-slider-track-wrapper {
+  height: 12px !important;
+  border-radius: 10px !important;
+}
+.mat-slider.mat-slider-horizontal .mat-slider-track-background,
+.mat-slider.mat-slider-horizontal .mat-slider-track-fill {
+  height: 100% !important;
+}
+.mat-slider.mat-slider-horizontal .mat-slider-track-fill {
+  background-color: var(--main-purple-background) !important;
+}
+.mat-accent .mat-slider-thumb {
+  height: 30px !important;
+  width: 30px !important;
+  background-color: white !important;
+  border: solid 2px gray !important;
+  bottom: -20px !important;
+  right: -20px !important;
+}
+.mat-slider-min-value:not(.mat-slider-thumb-label-showing) .mat-slider-thumb {
+  background-color: white !important;
+}
+.mat-slider-thumb-label {
+  transform: rotate(45deg) !important;
+  border-radius: 50% 50% 0 !important;
+  background-color: var(--main-purple-background) !important;
+
+  width: 50px !important;
+  height: 50px !important;
+
+  top: -65px !important;
+}
+.mat-slider-thumb {
+  transform: scale(0) !important;
+}
+.mat-slider-thumb-label-text {
+  opacity: 1 !important;
+}
