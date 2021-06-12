@@ -23,8 +23,11 @@ export class FavoritesComponent implements OnInit {
     this.favoritesComponentsList = this.favoritesDataService.loadFavoritesFromCache();
   }
 
-  goToComponentCard() {
-    this.router.navigateByUrl('component_card');
+  goToComponentCard(itemId: number): void {
+    this.router.navigate(
+      ['component_card'],
+      {queryParams: {itemId: itemId, fromPage: 'favorites'}}
+      );
   }
 
   removeFromFavorite(componentItemId: number) {

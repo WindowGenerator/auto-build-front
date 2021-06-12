@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, ParamMap, Router} from '@angular/router';
+import {map} from 'rxjs/operators';
+import {ComponentCardService, ComponentDataService, FavoritesDataService} from '../core/services';
+import {ComponentPartsModel} from '../core/models';
 
 @Component({
   selector: 'app-component-card',
@@ -7,13 +11,70 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ComponentCardComponent implements OnInit {
 
-  title: String;
+  title: String = '';
+  selectedComponent: ComponentPartsModel;
 
-  constructor() { }
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private componentDataService: ComponentDataService,
+    private favoritesDataService: FavoritesDataService,
+    private componentCardService: ComponentCardService,
+  ) {
+
+  }
 
   ngOnInit(): void {
-    this.title = 'Материнская плата Asus TUF GAMING B550-PLUS (sAM4, AMD B550)';
+    this.activatedRoute.queryParamMap.pipe(
+      map((paramAsMap: ParamMap) => {
+        if (!paramAsMap) {
+          this.router.navigateByUrl('');
+          return;
+        }
+        const fromPage = paramAsMap.get('fromPage');
 
+        if (fromPage === 'result-assembly') {
+
+          const componentTypeName = paramAsMap.get('componentTypeName');
+
+          const selectedComponents = this.componentDataService.selectedComponents;
+
+          if (!selectedComponents[componentTypeName]) {
+            this.router.navigateByUrl('');
+            return;
+          }
+          this.selectedComponent = selectedComponents[componentTypeName];
+        } else if (fromPage === 'favorites') {
+
+          const itemId = parseFloat(paramAsMap.get('itemId'));
+
+          const favorites = this.favoritesDataService.loadFavoritesFromCache();
+
+          for (const favorite of favorites) {
+            if (favorite.ItemId === itemId) {
+              this.selectedComponent = favorite;
+            }
+          }
+
+          if (!this.selectedComponent) {
+            this.router.navigateByUrl('');
+            return;
+          }
+        } else {
+          console.log('Тту не возможно было оказаться');
+          return;
+        }
+
+        this.title = this.selectedComponent.Name;
+
+        this.componentCardService.getInfoAboutComponent(this.selectedComponent.ItemId).subscribe();
+      })
+    ).subscribe();
+  }
+
+  addComponentToFavorite() {
+    this.favoritesDataService.saveFavoritesToCache([this.selectedComponent]);
+    this.router.navigateByUrl('favorites');
   }
 
 }
