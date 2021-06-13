@@ -1,31 +1,46 @@
-import {testUser, testProfile} from './mocks';
+import {testProfile, testUser, testUsers} from './mocks';
 import {HttpRequest, HttpResponse} from '@angular/common/http';
 import {of} from 'rxjs';
+import {User} from '../core/models';
 
 
-const loginUser = (request: HttpRequest<any>) => {
+const loginUserSuccess = (user: User, request: HttpRequest<any>) => {
+  return function (_request: HttpRequest<any>) {
+    return of(new HttpResponse({status: 200, body: user}));
+  };
+};
+
+const loginUnauthorized = (request: HttpRequest<any>) => {
   return of(new HttpResponse({
-    status: 200, body: testUser,
+    status: 401, statusText: 'Пользователь не авторизован',
   }));
 };
+
+const loginForbidden = (request: HttpRequest<any>) => {
+  return of(new HttpResponse({
+    status: 403, statusText: 'У пользователя нет прав на это действие',
+  }));
+};
+
 const getUser = (request: HttpRequest<any>) => {
   return of(new HttpResponse({
     status: 200, body: testUser,
   }));
 };
-const updateUser = (request: HttpRequest<any>) => {
-  const userFields = JSON.parse(request.body).user;
 
-  return of(new HttpResponse({
-    status: 200, body: {...testUser, ...userFields},
-  }));
+const updateUser = (user: User, oldUser: User, request: HttpRequest<any>) => {
+  return function (_request: HttpRequest<any>) {
+    return of(new HttpResponse({status: 200, body: {...oldUser, ...user}}));
+  };
 };
+
 const registerUser = (request: HttpRequest<any>) => {
   const userFields = JSON.parse(request.body).user;
   return of(new HttpResponse({
     status: 200, body: {...testUser, ...userFields},
   }));
 };
+
 const getProfile = (request: HttpRequest<any>) => {
   return of(new HttpResponse({
     status: 200, body: testProfile,
@@ -55,14 +70,33 @@ export const selectHandler = (request: HttpRequest<any>) => {
       return null;
     case 'POST':
       if (neededPartFromApiPath === 'users/login') {
-        return loginUser;
-      } if (neededPartFromApiPath === 'users/register') {
+
+        const body = JSON.parse(request.body);
+        if (!testUsers.has(body.email)) {
+          return loginUnauthorized;
+        }
+        return loginUserSuccess(testUsers.get(body.email), request);
+
+      }
+      if (neededPartFromApiPath === 'users/register') {
+
+        const body = JSON.parse(request.body);
+        if (testUsers.has(body.email)) {
+          return loginForbidden;
+        }
+        testUsers.set(body.email, body);
         return registerUser;
       }
       return null;
     case 'PUT':
       if (neededPartFromApiPath === 'user') {
-        return updateUser;
+        const body = JSON.parse(request.body);
+
+        if (!testUsers.has(body.email)) {
+          return loginUnauthorized;
+        }
+
+        return updateUser(testUsers.get(body.email), body, request);
       }
       return null;
     default:

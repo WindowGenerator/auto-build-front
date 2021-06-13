@@ -71,22 +71,6 @@ export class ComponentPartsService {
     return ComponentPartsService.sortComponentsPartsDataList(componentsPartsData);
   }
 
-  getComponentById(itemId: number | string): Observable<any> {
-    if (typeof itemId === 'number') {
-      itemId = itemId.toString();
-    }
-    const requestOptions = {
-      params: {
-        itemIds: itemId,
-        format: 'json',
-      }
-    };
-    const url = `https://api.retailrocket.net/api/2.0/recommendation/alternative/52e0e8141e994426487779d9`;
-    return this.http.get<any>(url, requestOptions).pipe(map(response => {
-      console.log(response);
-    }));
-  }
-
   getPriceByComponentParts(selectedComponents: { [key: string]: ComponentPartsModel }): number {
     let currentPrice = 0;
     for (const [formFieldName, componentPart] of Object.entries(selectedComponents)) {

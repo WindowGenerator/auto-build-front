@@ -13,6 +13,7 @@ export class ComponentCardComponent implements OnInit {
 
   title: String = '';
   selectedComponent: ComponentPartsModel;
+  characteristics: { [key: string]: string };
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -44,6 +45,7 @@ export class ComponentCardComponent implements OnInit {
             return;
           }
           this.selectedComponent = selectedComponents[componentTypeName];
+          console.log(selectedComponents);
         } else if (fromPage === 'favorites') {
 
           const itemId = parseFloat(paramAsMap.get('itemId'));
@@ -67,7 +69,8 @@ export class ComponentCardComponent implements OnInit {
 
         this.title = this.selectedComponent.Name;
 
-        this.componentCardService.getInfoAboutComponent(this.selectedComponent.ItemId).subscribe();
+        this.characteristics = this.componentCardService.getCharacteristicsByComponentName(this.selectedComponent);
+        console.log(this.characteristics);
       })
     ).subscribe();
   }

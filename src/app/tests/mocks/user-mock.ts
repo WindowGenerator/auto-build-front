@@ -4,6 +4,6 @@ export const testUser: User = {
   email: 'test@gmail.com',
   token: 'AAAAAAAAAAAAAAAAAAAaa',
   username: 'Иван Иванов',
-  bio: 'ХОЧУ ПИТСЫ',
-  image: 'OK',
 };
+
+export let testUsers: Map<string, User> = new Map();

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
-import {passwordControlValidator} from '../shared/password';
+import {passwordControlValidator} from '../shared/validators';
 import {Profile, ProfilesService, User, UserService} from '../core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {finalize} from 'rxjs/operators';

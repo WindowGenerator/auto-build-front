@@ -1,34 +1,25 @@
-<div class="favorites-page">  
-  <div class="container-fluid">    
+<div class="favorites-page">  
+  <div class="container-fluid">    
     <div class="row-fluid">      
       <p class="text-xs-center text-bold-custom">{{ title }}</p>      
       <div class="component-card row-fluid">
         <img class="image-card col" src="{{selectedComponent.PictureUrl}}" alt="">
         <div class ="info col-6">
         <div class="site-link">123.ru</div>
-        <div class="price site-link">12112 руб.</div>
+        <div class="price site-link">{{selectedComponent.Price}} руб.</div>
+          <br>
+        <div class="site-link">DNS</div>
+        <div class="price site-link">{{selectedComponent.Price - 589}} руб.</div>
         <div class="home-title choice-buttons add-to-fav">
-          <button class="btn btn-md btn-default" type="submit" (click)="addComponentToFavorite()> Добавить в избранное </button>
+          <button class="btn btn-md btn-default" type="submit" (click)="addComponentToFavorite()"> Добавить в избранное </button>
         </div> 
       </div>
       </div>
       <div class="characteristics-list">
         <h1>Характеристики</h1>
-        <div class="row characteristic">
-          <div class="col-sm">Модель</div>
-          <div class="col-sm">TUF GAMING B550-PLUS</div>
-        </div>
-        <div class="row characteristic">
-          <div class="col-sm">Поддержка двухканального режима работы памяти</div>
-          <div class="col-sm">да</div>
-        </div>
-        <div class="row characteristic">
-          <div class="col-sm">Модель</div>
-          <div class="col-sm">TUF GAMING B550-PLUS</div>
-        </div>
-        <div class="row characteristic">
-          <div class="col-sm">Поддержка двухканального режима работы памяти</div>
-          <div class="col-sm">да</div>
+        <div class="row characteristic" *ngFor="let key of characteristics | keys">
+          <div class="col-sm">{{key}}</div>
+          <div class="col-sm">{{characteristics[key] || ''}}</div>
         </div>
       </div>   
     </div>  

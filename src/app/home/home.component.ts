@@ -18,7 +18,9 @@ export class HomeComponent implements OnInit {
   title: String = '';
 
   commonInfoAboutBuildPc: CommonInfoAboutBuildPc = {
-    pc_build_for: 'work', max_pc_price: 0, pc_price: 0
+    pc_build_for: 'work',
+    max_pc_price: 0,
+    pc_price: 0
   } as CommonInfoAboutBuildPc;
 
   selectedComponents: { [key: string]: ComponentPartsModel } = {};

@@ -14,14 +14,24 @@
                 class="form-control form-control-md"
                 type="text" />
             </fieldset>
+            <div *ngIf="isRegisterPage">
+              <label class="validation-error" *ngFor="let error of getValidationErrors('username')">
+                {{error}}
+              </label>
+            </div>
             <fieldset class="form-group">
               <p class="text-xs-center text-normal-custom">Адрес электронной почты</p>
               <input
                 formControlName="email"
                 placeholder="Email"
                 class="form-control form-control-md"
-                type="text" />
+                type="email" />
             </fieldset>
+            <div>
+              <label class="validation-error" *ngFor="let error of getValidationErrors('email')">
+                {{error}}
+              </label>
+            </div>
             <fieldset class="form-group">
               <p class="text-xs-center text-normal-custom">Пароль</p>
               <input
@@ -30,6 +40,11 @@
                 class="form-control form-control-md"
                 type="password" />
             </fieldset>
+            <div>
+              <label class="validation-error" *ngFor="let error of getValidationErrors('password')">
+                {{error}}
+              </label>
+            </div>
             <fieldset class="form-group" *ngIf="isRegisterPage">
               <p class="text-xs-center text-normal-custom">Повторите пароль</p>
               <input
@@ -38,6 +53,11 @@
                 class="form-control form-control-md"
                 type="password" />
             </fieldset>
+            <div *ngIf="isRegisterPage">
+              <label class="validation-error" *ngFor="let error of getValidationErrors('password_check')">
+                {{error}}
+              </label>
+            </div>
             <div class="button-center nav-text-custom" *ngIf="isLoginPage">
               <a [routerLink]="['/login']">Забыли пароль?</a>
               <a [routerLink]="['/register']">Еще нет аккаунта?</a>

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {passwordControlValidator} from '../shared/password';
+import {emailValidator, passwordControlValidator} from '../shared/validators';
 import {Errors, UserService} from '../core';
 
 
@@ -28,9 +28,23 @@ export class AuthComponent implements OnInit {
   ) {
     // use FormBuilder to create a form group
     this.authForm = this.fb.group({
-      'email': ['', Validators.required],
-      'password': ['', Validators.required]
-    });
+      'email': [
+        '',
+        [
+          Validators.required,
+          Validators.email,
+          emailValidator
+        ]
+      ],
+      'password': [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(255)
+        ]
+      ]
+    }, {updateOn: 'blur'});
   }
 
   ngOnInit() {
@@ -44,29 +58,47 @@ export class AuthComponent implements OnInit {
 
       // add form control for username if this is the register page
       if (this.isRegisterPage) {
-        this.authForm.addControl('password_check', new FormControl('', [Validators.required]));
-        this.authForm.addControl('username', new FormControl('', [Validators.required]));
+        this.authForm.addControl(
+          'password_check',
+          new FormControl(
+            '', [
+              Validators.required,
+              Validators.minLength(6),
+              Validators.maxLength(255)
+            ]
+          )
+        );
+        this.authForm.addControl(
+          'username',
+          new FormControl(
+            '',
+            [
+              Validators.required,
+              Validators.minLength(6),
+              Validators.maxLength(255)
+            ]
+          )
+        );
+        this.authForm.setValidators(passwordControlValidator);
       }
-      this.authForm.setValidators(passwordControlValidator);
     });
   }
 
   submitForm() {
+    this.checkedValidationsErrorsBeforeSubmit();
     this.isSubmitting = true;
     this.errors = {errors: {}};
 
-    console.log(this.authForm?.errors);
-
     const credentials = this.authForm.value;
     this.userService
-    .attemptAuth(this.authType, credentials)
-    .subscribe(
-      data => this.router.navigateByUrl('/'),
-      err => {
-        this.errors = err;
-        this.isSubmitting = false;
-      }
-    );
+      .attemptAuth(this.authType, credentials)
+      .subscribe(
+        data => this.router.navigateByUrl('/'),
+        err => {
+          this.errors = err;
+          this.isSubmitting = false;
+        }
+      );
   }
 
   get isLoginPage(): boolean {
@@ -75,5 +107,49 @@ export class AuthComponent implements OnInit {
 
   get isRegisterPage(): boolean {
     return this.authType === 'register';
+  }
+
+  private checkedValidationsErrorsBeforeSubmit() {
+
+  }
+
+  haveValidationErrorsForControl(controlName: string): boolean {
+    if (this.authForm[controlName]) {
+      console.log('Что-то не так тута');
+      return false;
+    }
+    const control = this.authForm.get(controlName);
+
+    if (!control.touched) {
+      return false;
+    }
+    return control?.errors !== null;
+  }
+
+  getValidationErrors(controlName: string): Array<string> {
+    const errors = [];
+
+    if (!this.haveValidationErrorsForControl) {
+      return errors;
+    }
+    for (const [keyError, valueError] of Object.entries(this.authForm.get(controlName).errors)) {
+      let outputString = keyError;
+
+      switch (keyError) {
+        case 'required':
+          outputString = `Значение поля: ${controlName} обязательно для ввода`;
+          break;
+        case 'minlength':
+          outputString = `Минимальная длина для поля ${controlName} равна ${valueError?.requiredLength}`;
+          break;
+        case 'maxlength':
+          outputString = `Максимальная длина для поля ${controlName} равна ${valueError?.requiredLength}`;
+          break;
+        default:
+          break;
+      }
+      errors.push(outputString);
+    }
+    return errors;
   }
 }

@@ -4,6 +4,6 @@ export interface ComponentPartsModel {
   Name: string;
   PictureUrl: string;
   Price: number;
-  Url: number;
-  Vendor: number;
+  Url: string;
+  Vendor: string;
 }

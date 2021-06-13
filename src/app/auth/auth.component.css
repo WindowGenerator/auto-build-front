@@ -9,3 +9,10 @@
 .form-group {
   margin-top: 15px;
 }
+
+.validation-error {
+  padding: 5px;
+  background-color: #bf1821;
+  color: white;
+  border-radius: 5px;
+}
