@@ -1,0 +1,6 @@
+.validation-error {
+  padding: 5px;
+  background-color: #c45b5d;
+  color: white;
+  border-radius: 5px;
+}

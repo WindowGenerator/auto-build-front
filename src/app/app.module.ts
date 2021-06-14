@@ -10,7 +10,7 @@ import {
   SharedModule
 } from './shared';
 import { AppRoutingModule } from './app-routing.module';
-import { CoreModule } from './core';
+import {CoreModule, NgOnDestroy} from './core';
 import { AdvicesComponent } from './advices/advices.component';
 import { FavoritesComponent } from './favorites/favorites.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -28,7 +28,7 @@ import { ComponentCardComponent } from './component-card/component-card.componen
     AppRoutingModule,
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [NgOnDestroy],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

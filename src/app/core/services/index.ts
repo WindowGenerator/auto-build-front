@@ -7,3 +7,4 @@ export * from './component-parts.service';
 export * from './unsubscribe.service';
 export * from './component-data.service';
 export * from './favorites-data.service';
+export * from './component-card.service';

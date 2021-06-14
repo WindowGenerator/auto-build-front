@@ -9,7 +9,7 @@
           <img src="{{favoriteItem.PictureUrl}}" alt="">
         </div>
         <div class="text-block">
-          <a class="text-block-title" (click)="goToComponentCard()">
+          <a class="text-block-title" (click)="goToComponentCard(favoriteItem.ItemId)">
             {{favoriteItem.Name}}
           </a>
           <p class="text-block-content">

@@ -14,8 +14,7 @@
                   src="{{componentsDataList[component.formControlName].PictureUrl}}"
                 >
               </div>
-              <a
-                (click)="goToComponentCard(component.componentName, 'a')"
+              <a [routerLink]="" (click)="goToComponentCard(component.formControlName)"
                 class="component-main-info-block__reference">
                 {{componentsDataList[component.formControlName].Name}}
               </a>

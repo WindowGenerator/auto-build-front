@@ -3,7 +3,6 @@
     <div class="row">
       <div class="col-md-6 offset-md-3 col-xs-12">
         <p class="text-xs-center text-bold-custom">{{ title }}</p>
-        <app-list-errors [errors]="errors"></app-list-errors>
         <form [formGroup]="authForm" (ngSubmit)="submitForm()">
           <fieldset [disabled]="isSubmitting">
             <fieldset class="form-group" *ngIf="isRegisterPage">
@@ -20,7 +19,7 @@
                 formControlName="email"
                 placeholder="Email"
                 class="form-control form-control-md"
-                type="text" />
+                type="email" />
             </fieldset>
             <fieldset class="form-group">
               <p class="text-xs-center text-normal-custom">Пароль</p>
@@ -42,6 +41,8 @@
               <a [routerLink]="['/login']">Забыли пароль?</a>
               <a [routerLink]="['/register']">Еще нет аккаунта?</a>
             </div>
+            <br>
+            <app-list-errors [form]="authForm" [aliasedForControls]="aliasedForValidationErrors"></app-list-errors>
             <br>
             <div class="button-center">
               <button class="btn btn-md btn-primary" [disabled]="!authForm.valid" type="submit">

@@ -16,7 +16,39 @@
     width: 20%;
     height: 20%;
     margin-left: 25%;
+
+    min-width: 240px;
+    min-height: 240px;
+
+    background-color: white !important;
+
+    max-height: 240px;
+    overflow: hidden !important;
+
     border: 1px solid black;
+}
+
+.image-article-title {
+  height: 20%;
+  width: 20%;
+
+  margin-left: 25%;
+
+  min-width: 240px;
+  min-height: 240px;
+
+  background-color: white !important;
+
+  max-height: 240px;
+  overflow: hidden !important;
+  border-radius: 50%;
+}
+
+.image-article-title img {
+  position: absolute;
+  top: 25%;
+  margin-top: -0.625em;
+  width: 240px;
 }
 
 .characteristics-list {
@@ -41,6 +73,7 @@
     font-family: Manrope, "Helvetica Neue", sans-serif;
     margin-left: 50px;
     padding-right: 20px;
+    margin-bottom: 15px;
 }
 
 .info {

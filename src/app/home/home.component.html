@@ -38,7 +38,6 @@
           <div class="text-block-select">
             <ng-select
               placeholder="{{component.placeholder}}"
-              formControlName="{{component.formControlName}}"
               [items]="formNameToMethodToGet[component.formControlName] || []"
               (change)="onChangeComponentEvent($event, component.formControlName)"
 

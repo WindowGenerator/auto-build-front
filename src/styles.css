@@ -189,7 +189,8 @@ body { margin: 0; font-family: Manrope, "Helvetica Neue", sans-serif; }
   width: 50px !important;
   height: 50px !important;
 
-  top: -65px !important;
+  top: -62px !important;
+  right: -25px !important;
 }
 .mat-slider-thumb {
   transform: scale(0) !important;

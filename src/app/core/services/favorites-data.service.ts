@@ -1,6 +1,6 @@
-import {Injectable, OnDestroy, OnInit} from '@angular/core';
-import {ComponentPartsModel} from '../models';
-import {CommonInfoAboutBuildPc} from './component-data.service';
+import {Injectable, OnInit} from '@angular/core';
+import {ComponentPartsModel, User} from '../models';
+import {UserService} from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,15 +8,31 @@ import {CommonInfoAboutBuildPc} from './component-data.service';
 export class FavoritesDataService {
   // Максимально тупая реализация кэша, но надежная и понятная
 
+  private currentUser: User | null;
   private readonly favoritesCacheKey = 'favorites_components_parts';
+  private favoritesCacheKeyForUser = '';
 
   _favoritesItemIdToComponentsParts: { [key: number]: ComponentPartsModel } = {};
 
-  constructor() {
+  constructor(private userService: UserService) {
+    this.userService.currentUser.subscribe(data => {
+      console.log(data);
+      if (!data || !Object.keys(data)?.length) {
+        this.currentUser =  null;
+        return;
+      }
+      this.currentUser =  {...data};
+      this.favoritesCacheKeyForUser = this.favoritesCacheKey + this.currentUser.email;
+    });
   }
 
   removeFavoriteElementFromCache(favoritesComponentItemId: number): void {
-    const toLoad = localStorage.getItem(this.favoritesCacheKey) || null;
+
+    if (!this.currentUser) {
+      return;
+    }
+
+    const toLoad = localStorage.getItem(this.favoritesCacheKeyForUser) || null;
     if (toLoad !== null) {
       this._favoritesItemIdToComponentsParts = JSON.parse(toLoad);
     }
@@ -27,11 +43,15 @@ export class FavoritesDataService {
     delete this._favoritesItemIdToComponentsParts[favoritesComponentItemId];
 
     const toSave = JSON.stringify(this._favoritesItemIdToComponentsParts);
-    localStorage.setItem(this.favoritesCacheKey, toSave);
+    localStorage.setItem(this.favoritesCacheKeyForUser, toSave);
   }
 
   loadFavoritesFromCache(): Array<ComponentPartsModel> {
-    const toLoad = localStorage.getItem(this.favoritesCacheKey) || null;
+    if (!this.currentUser) {
+      return;
+    }
+
+    const toLoad = localStorage.getItem(this.favoritesCacheKeyForUser) || null;
     if (toLoad !== null) {
       this._favoritesItemIdToComponentsParts = JSON.parse(toLoad);
     }
@@ -43,6 +63,10 @@ export class FavoritesDataService {
   }
 
   saveFavoritesToCache(favoritesComponentsPartsParams: Array<ComponentPartsModel>) {
+    if (!this.currentUser) {
+      return;
+    }
+
     this.loadFavoritesFromCache();
     for (const newFavoriteComponentPart of favoritesComponentsPartsParams) {
       const itemId = newFavoriteComponentPart.ItemId;
@@ -50,6 +74,6 @@ export class FavoritesDataService {
     }
 
     const toSave = JSON.stringify(this._favoritesItemIdToComponentsParts);
-    localStorage.setItem(this.favoritesCacheKey, toSave);
+    localStorage.setItem(this.favoritesCacheKeyForUser, toSave);
   }
 }

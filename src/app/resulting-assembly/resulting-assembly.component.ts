@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {componentsList} from '../shared/components';
-import {ActivatedRoute, Params, Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {CommonInfoAboutBuildPc, ComponentDataService, FavoritesDataService} from '../core/services';
 import {ComponentPartsModel} from '../core/models';
 
@@ -43,8 +43,10 @@ export class ResultingAssemblyComponent implements OnInit {
     this.router.navigateByUrl('favorites');
   }
 
-  goToComponentCard(componentTypeName: string, componentName: string): void {
-    this.router.navigateByUrl('component_card');
+  goToComponentCard(componentTypeName: string): void {
+    this.router.navigate(
+      ['component_card'],
+      {queryParams: {componentTypeName: componentTypeName, fromPage: 'result-assembly'}}
+    );
   }
-
 }
