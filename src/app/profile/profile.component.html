@@ -2,7 +2,7 @@
   <div class="container page">
     <div class="row">
       <div class="col-md-6 offset-md-3 col-xs-12">
-        <p class="text-xs-center text-bold-custom">{{ title }}</p> 
+        <p class="text-xs-center text-bold-custom">{{ title }}</p> 
         <form [formGroup]="profileForm" (ngSubmit)="submitForm()">
           <fieldset [disabled]="isSubmitting">
             <fieldset class="form-group text-margin">
@@ -37,6 +37,9 @@
                 class="form-control form-control-md"
                 type="password" />
             </fieldset>
+            <br>
+            <app-list-errors [form]="profileForm" [aliasedForControls]="aliasedForValidationErrors"></app-list-errors>
+            <br>
             <div class="button-center">
               <button class="btn btn-md btn-default" [disabled]="!changeIsValid" type="submit">
                 {{ submitButtonName }}

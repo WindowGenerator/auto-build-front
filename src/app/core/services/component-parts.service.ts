@@ -2,8 +2,10 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ComponentPartsModel} from '../models';
 import {Observable, of} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, takeUntil} from 'rxjs/operators';
 import {componentToCategoryId, FormControlComponentType} from '../../shared/components';
+import {NgOnDestroy} from './unsubscribe.service';
+import {cacheObservable} from './cache.helper';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,10 @@ import {componentToCategoryId, FormControlComponentType} from '../../shared/comp
 export class ComponentPartsService {
 
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private unsubscribe: NgOnDestroy
+  ) {
 
   }
 
@@ -34,25 +39,7 @@ export class ComponentPartsService {
     return arrayToSorted;
   }
 
-
-  getPartsByName(name: FormControlComponentType): Observable<Array<ComponentPartsModel>> {
-    if (!componentToCategoryId.has(name)) {
-      return of([]);
-    }
-    const categoryIds = componentToCategoryId.get(name).toString();
-    const requestOptions = {
-      params: {
-        categoryIds: categoryIds,
-        format: 'json',
-      }
-    };
-    return this.http.get<any>(this.baseUrl, requestOptions).pipe(map((response: Array<any>) => {
-      return this.parseResponseFromServer(response);
-    }));
-  }
-
-
-  parseResponseFromServer(response: Array<any>): Array<ComponentPartsModel> {
+  private static parseResponseFromServer(response: Array<any>): Array<ComponentPartsModel> {
     const componentsPartsData: Array<ComponentPartsModel> = [];
     if (!response) {
       return componentsPartsData;
@@ -69,6 +56,28 @@ export class ComponentPartsService {
       });
     }
     return ComponentPartsService.sortComponentsPartsDataList(componentsPartsData);
+  }
+
+  @cacheObservable({
+    caching: true,
+    expiration: 600
+  })
+  getPartsByName(name: FormControlComponentType): Observable<Array<ComponentPartsModel>> {
+    if (!componentToCategoryId.has(name)) {
+      return of([]);
+    }
+    const categoryIds = componentToCategoryId.get(name).toString();
+    const requestOptions = {
+      params: {
+        categoryIds: categoryIds,
+        format: 'json',
+      }
+    };
+    return this.http.get<any>(this.baseUrl, requestOptions)
+      .pipe(takeUntil(this.unsubscribe))
+      .pipe(map((response: Array<any>) => {
+        return ComponentPartsService.parseResponseFromServer(response);
+      }));
   }
 
   getPriceByComponentParts(selectedComponents: { [key: string]: ComponentPartsModel }): number {

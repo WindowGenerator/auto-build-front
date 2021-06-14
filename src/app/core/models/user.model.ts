@@ -3,3 +3,8 @@ export interface User {
   token: string;
   username: string;
 }
+
+export interface InputUser {
+  email: string;
+  password: string;
+}

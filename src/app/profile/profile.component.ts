@@ -16,20 +16,57 @@ export class ProfileComponent implements OnInit {
   isSubmitting = false;
   submitButtonName = '';
 
+  aliasedForValidationErrors = {
+    username: 'Имя пользователя',
+    old_password: 'Старый пароль',
+    password: 'Пароль',
+    password_check: 'Проверка пароля',
+    email: 'Электронная почта',
+  };
+
   constructor(
     private profilesService: ProfilesService,
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) {
     // use FormBuilder to create a form group
     this.profileForm = this.fb.group({
-      'username': ['', Validators.required],
-      'old_password': ['', Validators.required],
-      'password': ['', Validators.required],
-      'password_check': ['', Validators.required],
-    }, {validators: passwordControlValidator});
+      'username': [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(255),
+        ]
+      ],
+      'old_password': [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(255),
+        ]
+      ],
+      'password': [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(255),
+        ]
+      ],
+      'password_check': [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(255),
+          passwordControlValidator
+        ]
+      ],
+    });
   }
 
   profile: Profile;
@@ -39,7 +76,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.title = 'Ваш профиль';
-    this.submitButtonName = 'Сменить пароль';
+    this.submitButtonName = 'Изменить';
 
     this.userService.currentUser.subscribe(data => {
       this.currentUser = {...data};
@@ -51,12 +88,14 @@ export class ProfileComponent implements OnInit {
   get usernameControl() {
     return this.profileForm.get('username');
   }
+
   get passwordControl() {
     return this.profileForm.get('password');
   }
 
   get changeIsValid() {
-    return (this.currentUser.username !== this.usernameControl.value) && this.profileForm.valid;
+    return (this.currentUser.username !== this.usernameControl.value)
+      && this.profileForm.valid;
   }
 
   submitForm() {
@@ -68,7 +107,8 @@ export class ProfileComponent implements OnInit {
       'password': this.passwordControl.value
     };
 
-    this.userService.update(newUserFields)
+    this.userService
+      .update(newUserFields)
       .pipe(finalize(() => this.isSubmitting = false))
       .subscribe(userData => {
         this.currentUser = {...userData};

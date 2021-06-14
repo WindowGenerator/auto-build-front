@@ -1,17 +1,27 @@
-import {testProfile, testUser, testUsers} from './mocks';
-import {HttpRequest, HttpResponse} from '@angular/common/http';
+import {getCurrentUserFromLocalStorage, getUserFromLocalStorage, setUserToLocaleStorage, testProfile, testUser} from './mocks';
+import {HttpErrorResponse, HttpRequest, HttpResponse} from '@angular/common/http';
 import {of} from 'rxjs';
-import {User} from '../core/models';
+import {InputUser, User} from '../core/models';
 
 
-const loginUserSuccess = (user: User, request: HttpRequest<any>) => {
+const loginUserSuccess = (user: InputUser, request: HttpRequest<any>) => {
+  const loginUser = getUserFromLocalStorage(user.email);
+
+  if (!getUserFromLocalStorage(user.email)) {
+    return loginUnauthorized;
+  }
+
+  if (user.password !== loginUser.token) {
+    return loginUnauthorized;
+  }
+
   return function (_request: HttpRequest<any>) {
-    return of(new HttpResponse({status: 200, body: user}));
+    return of(new HttpResponse({status: 200, body: loginUser}));
   };
 };
 
 const loginUnauthorized = (request: HttpRequest<any>) => {
-  return of(new HttpResponse({
+  return of(new HttpErrorResponse({
     status: 401, statusText: 'Пользователь не авторизован',
   }));
 };
@@ -23,32 +33,47 @@ const loginForbidden = (request: HttpRequest<any>) => {
 };
 
 const getUser = (request: HttpRequest<any>) => {
+  const user = getCurrentUserFromLocalStorage();
   return of(new HttpResponse({
-    status: 200, body: testUser,
+    status: 200, body: user || {} as User,
   }));
 };
 
-const updateUser = (user: User, oldUser: User, request: HttpRequest<any>) => {
+const updateUser = (updateUserFields: InputUser, request: HttpRequest<any>) => {
+  const oldUser = getCurrentUserFromLocalStorage();
+  const userWithToken = {...oldUser, ...updateUserFields, token: updateUserFields.password};
+
+  setUserToLocaleStorage(userWithToken);
+
   return function (_request: HttpRequest<any>) {
-    return of(new HttpResponse({status: 200, body: {...oldUser, ...user}}));
+    return of(new HttpResponse({
+      status: 200, body: userWithToken
+    }));
   };
 };
 
-const registerUser = (request: HttpRequest<any>) => {
+const registerUser = (user: InputUser, request: HttpRequest<any>) => {
+
+  if (getUserFromLocalStorage(user.email)) {
+    return loginForbidden;
+  }
+
   const userFields = JSON.parse(request.body).user;
-  return of(new HttpResponse({
-    status: 200, body: {...testUser, ...userFields},
-  }));
+
+  const userWithToken = {...testUser, ...userFields, token: userFields.email};
+  setUserToLocaleStorage(userWithToken);
+
+  return function (_request: HttpRequest<any>) {
+    return of(new HttpResponse({
+      status: 200, body: userWithToken
+    }));
+  };
 };
 
 const getProfile = (request: HttpRequest<any>) => {
   return of(new HttpResponse({
     status: 200, body: testProfile,
   }));
-};
-
-const extractIdPathParamFromUrl = (requestUrl: URL) => {
-  return getNeededPartFromApiPath(requestUrl).split('/').pop();
 };
 
 const getNeededPartFromApiPath = (requestUrl: URL) => {
@@ -60,7 +85,7 @@ export const selectHandler = (request: HttpRequest<any>) => {
   const neededPartFromApiPath = getNeededPartFromApiPath(requestUrl);
 
   switch (request.method) {
-    case 'GET':
+    case RequestMethods.GET:
       if (neededPartFromApiPath === 'user') {
         return getUser;
       }
@@ -68,38 +93,34 @@ export const selectHandler = (request: HttpRequest<any>) => {
         return getProfile;
       }
       return null;
-    case 'POST':
+    case RequestMethods.POST:
       if (neededPartFromApiPath === 'users/login') {
 
-        const body = JSON.parse(request.body);
-        if (!testUsers.has(body.email)) {
-          return loginUnauthorized;
-        }
-        return loginUserSuccess(testUsers.get(body.email), request);
+        const body = JSON.parse(request.body).user;
+        return loginUserSuccess(body, request);
 
       }
       if (neededPartFromApiPath === 'users/register') {
 
-        const body = JSON.parse(request.body);
-        if (testUsers.has(body.email)) {
-          return loginForbidden;
-        }
-        testUsers.set(body.email, body);
-        return registerUser;
+        const body = JSON.parse(request.body).user;
+        return registerUser(body, request);
       }
       return null;
-    case 'PUT':
+    case RequestMethods.PUT:
       if (neededPartFromApiPath === 'user') {
-        const body = JSON.parse(request.body);
+        const body = JSON.parse(request.body).user;
 
-        if (!testUsers.has(body.email)) {
-          return loginUnauthorized;
-        }
-
-        return updateUser(testUsers.get(body.email), body, request);
+        return updateUser(body, request);
       }
       return null;
     default:
       return null;
   }
 };
+
+enum RequestMethods {
+  POST = 'POST',
+  PUT = 'PUT',
+  GET = 'GET',
+  PATCH = 'PATCH'
+}
